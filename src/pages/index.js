@@ -1,10 +1,31 @@
-import React from 'react'
-import Link from 'gatsby-link'
+import React from "react";
+import PostLink from "../components/post-link";
 
-const IndexPage = () => (
-  <div>
-    <Link to="/vx/linepath/">Go to Linepath</Link>
-  </div>
-)
+const IndexPage = ({ data: { allMarkdownRemark: { edges } } }) => {
+  const Posts = edges
+    .filter(edge => !!edge.node.frontmatter.date) // You can filter your posts based on some criteria
+    .map(edge => <PostLink key={edge.node.id} post={edge.node} />);
 
-export default IndexPage
+  return <div>{Posts}</div>;
+};
+
+export default IndexPage;
+
+export const pageQuery = graphql`
+  query IndexQuery {
+    allMarkdownRemark(sort: { order: DESC, fields: [frontmatter___date] }) {
+      edges {
+        node {
+          id
+          excerpt(pruneLength: 250)
+          frontmatter {
+            date(formatString: "MMMM DD, YYYY")
+            library
+            path
+            title
+          }
+        }
+      }
+    }
+  }
+`;
