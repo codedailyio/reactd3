@@ -23,7 +23,7 @@ const Header = () => (
             textDecoration: 'none',
           }}
         >
-          Gatsby
+          React D3
         </Link>
       </h1>
     </div>
